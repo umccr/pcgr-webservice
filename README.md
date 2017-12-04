@@ -9,3 +9,9 @@ To put it simply:
     curl http://ec2instance/pcgr/run
 
 pcgr-webservice is just a small Flask scaffold that can be used as an example to build other [(minimal?) webservices](https://testdriven.io/part-one-intro/).
+
+Running outside docker:
+
+	apt-get install python3-venv
+	python3 -m venv venv && source activate venv/bin/activate
+	python manage.py runserver
