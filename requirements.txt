@@ -1,5 +1,4 @@
 Flask
 Flask-script
-redis
-rq
+boto3
 shelljob

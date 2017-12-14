@@ -1,6 +1,8 @@
 import os
 import glob
 import logging
+import boto3
+
 from shelljob import proc
 from flask import Flask, Response, request, redirect, url_for, jsonify
 from werkzeug import secure_filename
@@ -13,6 +15,8 @@ from werkzeug import secure_filename
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
+# Upload results to bucket
+s3 = boto3.client('s3')
 
 # instantiate the app
 app = Flask(__name__)
@@ -121,5 +125,10 @@ def run_pcgr():
         cmd = ['/usr/bin/python', '/mnt/work/pcgr/pcgr.py', '--force_overwrite', '--input_vcf', os.path.abspath(vcf), '--msig_identify', '--list_noncoding', '/mnt/work/pcgr', output_dir, output_dir]
         log.info("Running: {}".format(cmd))
         g.run(cmd)
+        log.info("Finished: {}".format(output_dir))
+        log.info("Uploading: {}".format(output_dir))
+
+        s3.meta.client.upload_file(output_dir, 'umccr-pcgr')
+        log.info("Results uploaded")
 
     return Response( _read_process(), mimetype= 'text/plain' )
