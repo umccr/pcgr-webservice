@@ -14,4 +14,5 @@ Running outside docker:
 
 	apt-get install python3-venv
 	python3 -m venv venv && source activate venv/bin/activate
+	APP_SETTINGS=server.config.DevelopmentConfig
 	python manage.py runserver
